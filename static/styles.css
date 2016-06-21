@@ -1,5 +1,4 @@
 
-
 .navbar-inverse {
   position:fixed;
   top:0;
@@ -22,30 +21,18 @@
   float: none;
 }
 
-/*#heading {
-  background-color: dodgerblue;
-  width: 100%
-}*/
 #taco, #good, #bad{
   padding-top: 50px;
 }
 
 #good .active{
-
   background-color: #89C9B6;
-
 }
 
 #bad .active{
-
   background-color: #F07A94;
-
 }
 .glyphicon {
   word-break: break-word;
-}
-
-.label-info {
-    background-color: rgba(51, 122, 183, 0.51);
 }
 
