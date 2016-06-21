@@ -33,62 +33,14 @@
       </ul>
     </div>
 
+     <script type="text/javascript" src=../static/taco.js></script>
 
-
-
-
-    <script type="text/javascript">
-    $("a.list_taco").click(function() {
-      //get url, taco name and empty the table
-    var url = $(this).attr('data-url');
-    var taco = $(this).text();
-    $('#goodtoppings').empty();
-    $('#badtoppings').empty();
-
-    //ajax request to get the taco information
-    $.getJSON(url, function(data) {
-      $('#good_badge').text(data['good_toppings'].length);
-      $('#bad_badge').text(data['bad_toppings'].length);
-      var currentdata = data;
-      console.log(data);
-      var good_topping_html = '';
-      var bad_topping_html = '';
-      var ingredients = '';
-      for (var i=0; i < data['good_toppings'].length; i++) {
-        good_topping_html += '<a href="#" class="list-group-item trying" data-index="' + i + '">' +
-        '<span class="glyphicon">' +
-        '<span class = "label label-info">' + data["good_toppings"][i]["topping_name"] + ' has ' + data["good_toppings"][i]["ingredients"].length + '   ingredients </span>  <br>'//+ '</span></a>'
-
-        ingredients= data["good_toppings"][i]["ingredients"].join(" ")
-
-        good_topping_html +=  ingredients + '</span></a>'
-      }
-      $("#goodtoppings").append(good_topping_html);
-
-      var ingredients = '';
-      for (var i=0; i < data['bad_toppings'].length; i++) {
-        bad_topping_html += '<a href="#" class="list-group-item" data-index="' + i + '">' +
-        '<span style="word-break: break-word;" class="glyphicon">' +
-        data["bad_toppings"][i]["topping_name"] + ' has ' + data["bad_toppings"][i]["ingredients"].length + '   ingredients   <br>'//+ '</span></a>' //+ '</span></a>'
-
-        ingredients= data["bad_toppings"][i]["ingredients"].join(" ")
-
-        bad_topping_html +=  ingredients + '</span></a>'
-      }
-      $("#badtoppings").append(bad_topping_html);
-    });
-  });
-
-
-  </script>
-
-
-
+    <!-- Display good and bad taco list with toppings and ingredients-->
 
     <div id="good" class="col-xs-5">
         <div class="list-group">
             <a href="#" class="list-group-item active">
-                <span class="glyphicon"></span> GOOD TOPPINGS w/ Ingredients <span id="good_badge" class="badge ">25</span>
+                <span class="glyphicon"></span> GOOD TOPPINGS \w count and ingredients<span id="good_badge" class="badge ">25</span>
             </a>
             <div id="goodtoppings"></div>
         </div>
@@ -96,7 +48,7 @@
     <div id="bad" class="col-xs-5">
         <div class="list-group">
             <a href="#" class="list-group-item active">
-                <span class="glyphicon"></span> BAD TOPPINGS  w/ Ingredients<span id="bad_badge" class="badge">25</span>
+                <span class="glyphicon"></span> BAD TOPPINGS \w count and ingredients<span id="bad_badge" class="badge">25</span>
             </a>
             <div id="badtoppings"></div>
         </div>
