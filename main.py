@@ -5,6 +5,7 @@ import tornado.web
 import tornado.options
 
 from handlers import MainHandler
+from handlers import TacoHandler
 from settings import SQLALCHEMY_DATABASE_URI
 
 if __name__ == "__main__":
@@ -14,6 +15,7 @@ if __name__ == "__main__":
     app = tornado.web.Application([
         # where handlers go
         (r"/", MainHandler),
+        (r"/api/tacos/(.*)", TacoHandler),
         # where static files are sourced
         # this is too fancy...but maybe you want to use it? ;)
         # (r"/static/", tornado.web.StaticFileHandler, {'path': SOME_PATH_HERE}),
