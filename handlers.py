@@ -1,10 +1,11 @@
 from base import BaseRequestHandler
 
 import models
+import json
 
 class MainHandler(BaseRequestHandler):
     def get(self):
-        tacos = self.db.query(models.Taco).limit(3).all()
+        tacos = self.db.query(models.Taco).limit(200).all()
         kwargs = {
             'tacos': tacos
         }
