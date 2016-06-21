@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Wake Testing Project</title>
+    <script src='{{ static_url("jquery-2.2.4.min.js") }}'></script>
+<script>
+    // your js, jquery, or whatever you want goes here! :)
+</script>
+</head>
+<body>
+<table>
+{% for taco in tacos %}
+<tr>
+<td>Taco name: {{ taco.name }}</td>
+    <tr>
+        {% for topping in taco.toppings() %}
+        <td>Topping name: {{ topping.name }}
+        <br>Is it good?<br>
+            {% if topping.is_good %}
+                Good
+            {% else %}
+                Bad
+            {% end %}
+        {% end %}
+    </tr>
+    <tr>
+    <td>Taco topping sum: {{ len(taco.toppings()) }}</td>
+    <td>Taco ingredient sum: {{ taco.ingredient_sum() }}</td>
+    <td>Taco ingredients
+        {% for ingredient in taco.ingredients() %}
+            <br>
+            {{ ingredient.name }}
+        {% end %}
+    </td>
+    </tr>
+</tr>
+{% end %}
+</tr>
+</table>
+
+<table>
+Stats go here
+</table>
+</body>
+</html>
