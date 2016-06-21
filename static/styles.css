@@ -1,0 +1,51 @@
+
+
+.navbar-inverse {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  opacity: .8;
+  z-index:2;
+  background-color : #337ab7;
+}
+
+.navbar-header {
+    float: left;
+    text-align: center;
+    width: 100%;
+}
+
+.navbar-brand {
+  color: white;
+  font-size: 40px;
+  float: none;
+}
+
+/*#heading {
+  background-color: dodgerblue;
+  width: 100%
+}*/
+#taco, #good, #bad{
+  padding-top: 50px;
+}
+
+#good .active{
+
+  background-color: #89C9B6;
+
+}
+
+#bad .active{
+
+  background-color: #F07A94;
+
+}
+.glyphicon {
+  word-break: break-word;
+}
+
+.label-info {
+    background-color: rgba(51, 122, 183, 0.51);
+}
+
