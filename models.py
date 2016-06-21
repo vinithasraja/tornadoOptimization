@@ -19,7 +19,6 @@ class Taco(Base):
     created = Column(types.DateTime, default=datetime.utcnow)
     toppings = relationship('Topping', backref='taco')
     #Merging the toppings table
-
     # bad_toppings = relationship('BadTopping', backref='taco')
     # good_toppings = relationship('GoodTopping', backref='taco')
 
@@ -56,7 +55,8 @@ class Taco(Base):
     #         ingredients_list += [ingredient for ingredient in topping.ingredients]
     #     return ingredients_list
 
-    def ingredient_sum(self):
+#Planning to use ingredient sum for printing statistics
+        def ingredient_sum(self):
         total_sum = 0
         total_toppings = self.toppings()
         for topping in total_toppings:
@@ -70,13 +70,8 @@ class Taco(Base):
                     total_sum += 1
         return total_sum
 
-    __mapper_args__ = {
-        'polymorphic_identity': 'taco'
-    }
-
-
-class GoodTopping(Base):
-    __tablename__ = 'waketesting_good_toppings'
+class Topping(Base):
+    __tablename__ = 'waketesting_toppings'
     __table_args__ = {}
 
     id = Column(types.Integer, primary_key=True, autoincrement=True)
@@ -86,30 +81,11 @@ class GoodTopping(Base):
     # signifies if this is a good topping or not
     is_good = Column(types.Boolean, default=True)
 
-    ingredients = relationship('Ingredient', backref='good_topping')
+    ingredients = relationship('Ingredient', backref='topping')
 
     __mapper_args__ = {
-        'polymorphic_identity': 'good_topping'
+        'polymorphic_identity': 'topping'
     }
-
-
-class BadTopping(Base):
-    __tablename__ = 'waketesting_bad_toppings'
-    __table_args__ = {}
-
-    id = Column(types.Integer, primary_key=True, autoincrement=True)
-    created = Column(types.DateTime, default=datetime.utcnow)
-    name = Column(types.String)
-    taco_id = Column(types.Integer, ForeignKey('waketesting_tacos.id'))
-    # signifies if this is a good topping or not
-    is_good = Column(types.Boolean, default=False)
-
-    ingredients = relationship('Ingredient', backref='bad_topping')
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'bad_topping'
-    }
-
 
 class Ingredient(Base):
     __tablename__ = 'waketesting_ingredients'
@@ -120,15 +96,14 @@ class Ingredient(Base):
     id = Column(types.Integer, primary_key=True, autoincrement=True)
     created = Column(types.DateTime, default=datetime.utcnow)
     name = Column(types.String)
-    good_topping_id = Column(types.Integer, ForeignKey('waketesting_good_toppings.id'), nullable=True)
-    bad_topping_id = Column(types.Integer, ForeignKey('waketesting_bad_toppings.id'), nullable=True)
+    topping_id = Column(types.Integer, ForeignKey('waketesting_toppings.id'), nullable=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'ingredient'
     }
 
     # you can only have either a good or a bad topping fk at a time
-
+    #Not required as the topping table is merged
     @validates('good_topping')
     def validate_good_topping(self, key, address):
         if address and self.bad_topping:
@@ -138,3 +113,4 @@ class Ingredient(Base):
     def validate_bad_topping(self, key, address):
         if address and self.good_topping:
             raise HTTPError(500, reason="ingredient can only belong to one topping!")
+
