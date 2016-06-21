@@ -90,8 +90,10 @@ if __name__ == '__main__':
     Each taco has toppings which are made up of ingredients
     Each topping can have up to 20 ingredients
     """
-
+    # Refactored topping db update and ingredients update
     for taco_num in range(500):
+
+        # Populating the taco table
         taco_num_str = str(taco_num)
         print "Making taco " + taco_num_str
         taco = Taco(name=random.choice(TACO_NAMES) + taco_num_str)
@@ -99,32 +101,26 @@ if __name__ == '__main__':
         # flush is necessary so we can assign the toppings to the ingredient
         db.flush()
 
-        # we need different kinds of toppings!
-        for topping in random.sample(GOOD_TOPPING_NAMES, random.randint(1, 26)):
-            good_topping = GoodTopping(taco_id=taco.id, name=topping)
+        # Populating the toppings table
+        for topping_name in random.sample(GOOD_TOPPING_NAMES, random.randint(1,26)):
+            good_topping = Topping(taco_id=taco.id, name=topping_name, is_good=True)
             db.add(good_topping)
-            # flush is necessary so we can assign the toppings to the ingredient
-            # db.commit()
             db.flush()
-
-            # now we need ingredients!
             for i in range(random.randint(1, 20)):
                 # an ingredient is a random string of 15 chars
-                name = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(15))
-                ingredient = Ingredient(good_topping_id=good_topping.id, name=name)
+                name = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+                ingredient = Ingredient(topping_id=good_topping.id, name=name)
                 db.add(ingredient)
 
-        for topping in random.sample(BAD_TOPPING_NAMES, random.randint(1, 26)):
-            bad_topping = BadTopping(taco_id=taco.id, name=topping)
-            db.add(bad_topping)
-            # flush is necessary so we can assign the toppings to the ingredient
-            db.flush()
 
-            # now we need ingredients!
+        for topping_name in random.sample(BAD_TOPPING_NAMES, random.randint(1,26)):
+            bad_topping = Topping(taco_id=taco.id, name=topping_name, is_good=False)
+            db.add(bad_topping)
+            db.flush()
             for i in range(random.randint(1, 20)):
                 # an ingredient is a random string of 15 chars
-                name = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(15))
-                ingredient = Ingredient(bad_topping_id=bad_topping.id, name=name)
+                name = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
+                ingredient = Ingredient(topping_id=bad_topping.id, name=name)
                 db.add(ingredient)
 
     db.commit()
