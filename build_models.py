@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from settings import SQLALCHEMY_DATABASE_URI
-from models import Base, Taco, GoodTopping, BadTopping, Ingredient
+from models import Base, Taco, Topping, Ingredient
 
 import random
 import string
