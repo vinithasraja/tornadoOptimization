@@ -17,27 +17,44 @@ class Taco(Base):
     id = Column(types.Integer, primary_key=True, autoincrement=True)
     name = Column(types.String, unique=True, index=True)
     created = Column(types.DateTime, default=datetime.utcnow)
+    toppings = relationship('Topping', backref='taco')
+    #Merging the toppings table
 
-    bad_toppings = relationship('BadTopping', backref='taco')
-    good_toppings = relationship('GoodTopping', backref='taco')
+    # bad_toppings = relationship('BadTopping', backref='taco')
+    # good_toppings = relationship('GoodTopping', backref='taco')
 
     @property
     def db(self):
         return inspect(self).session
 
-    def toppings(self):
-        bad_toppings = self.db.query(BadTopping).filter_by(taco_id=self.id)
-        good_toppings = self.db.query(GoodTopping).filter_by(taco_id=self.id)
+    def toppings(self, good=True):
+        is_good = True if good else False
+        toppings = self.db.query(Topping).filter_by(taco_id=self.id, is_good=is_good)
+        toppings_list= []
 
-        return list(bad_toppings) + list(good_toppings)
+        for g in toppings:
+            ingredient_dict = {}
+            ingredients_name = [ingredient.name for ingredient in g.ingredients]
+            toppings_list.append({
+                'topping_name': g.name,
+                'ingredients': ingredients_name
+            })
 
-    def ingredients(self):
-        # get ingredients from all toppings
-        toppings = self.toppings()
-        ingredients_list = []
-        for topping in toppings:
-            ingredients_list += [ingredient for ingredient in topping.ingredients]
-        return ingredients_list
+        return toppings_list
+
+    # def toppings(self):
+    #     bad_toppings = self.db.query(BadTopping).filter_by(taco_id=self.id)
+    #     good_toppings = self.db.query(GoodTopping).filter_by(taco_id=self.id)
+
+    #     return list(bad_toppings) + list(good_toppings)
+
+    # def ingredients(self):
+    #     # get ingredients from all toppings
+    #     toppings = self.toppings()
+    #     ingredients_list = []
+    #     for topping in toppings:
+    #         ingredients_list += [ingredient for ingredient in topping.ingredients]
+    #     return ingredients_list
 
     def ingredient_sum(self):
         total_sum = 0
