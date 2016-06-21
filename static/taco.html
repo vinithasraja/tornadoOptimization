@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="taco" class="col-xs-2">
+  <div id="heading">
+    <h3 class="display-4">Taco List</h3>
+  </div>
+  {% for taco in tacos %}
+  <ul class = "list-group">
+  <a class="list_taco" href="#" data-url="/api/tacos/{{taco.id}}" id={{taco.id}}> {{taco.name}} </a><br>
+    {% end %}
+  </ul>
+</div>
+</body>
+</html>
