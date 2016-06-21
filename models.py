@@ -56,7 +56,7 @@ class Taco(Base):
     #     return ingredients_list
 
 #Planning to use ingredient sum for printing statistics
-        def ingredient_sum(self):
+    def ingredient_sum(self):
         total_sum = 0
         total_toppings = self.toppings()
         for topping in total_toppings:

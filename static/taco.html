@@ -1,15 +1,106 @@
 <!DOCTYPE html>
 <html>
-<body>
-<div id="taco" class="col-xs-2">
-  <div id="heading">
-    <h3 class="display-4">Taco List</h3>
-  </div>
-  {% for taco in tacos %}
-  <ul class = "list-group">
-  <a class="list_taco" href="#" data-url="/api/tacos/{{taco.id}}" id={{taco.id}}> {{taco.name}} </a><br>
-    {% end %}
-  </ul>
-</div>
-</body>
+  <head>
+      <meta charset="UTF-8">
+      <title>Wake Testing Project</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+      <script src='{{ static_url("jquery-2.2.4.min.js") }}'></script>
+      <link href='{{ static_url("styles.css") }}' type="text/css" rel="stylesheet" />
+  </head>
+  <body>
+
+  <!-- Header -->
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand text-center center-block" href="#">Top 200 tacos </a>
+        </div>
+      </div>
+    </nav>
+
+
+    <!-- Taco List-->
+
+    <div id="taco" class="col-xs-2">
+      <div id="heading">
+        <h3 class="display-4">Taco List</h3>
+      </div>
+      {% for taco in tacos %}
+      <ul class = "list-group">
+      <a class="list_taco" href="#" data-url="/api/tacos/{{taco.id}}" id={{taco.id}}> {{taco.name}} </a><br>
+        {% end %}
+      </ul>
+    </div>
+
+
+
+
+
+    <script type="text/javascript">
+    $("a.list_taco").click(function() {
+      //get url, taco name and empty the table
+    var url = $(this).attr('data-url');
+    var taco = $(this).text();
+    $('#goodtoppings').empty();
+    $('#badtoppings').empty();
+
+    //ajax request to get the taco information
+    $.getJSON(url, function(data) {
+      $('#good_badge').text(data['good_toppings'].length);
+      $('#bad_badge').text(data['bad_toppings'].length);
+      var currentdata = data;
+      console.log(data);
+      var good_topping_html = '';
+      var bad_topping_html = '';
+      var ingredients = '';
+      for (var i=0; i < data['good_toppings'].length; i++) {
+        good_topping_html += '<a href="#" class="list-group-item trying" data-index="' + i + '">' +
+        '<span class="glyphicon">' +
+        '<span class = "label label-info">' + data["good_toppings"][i]["topping_name"] + ' has ' + data["good_toppings"][i]["ingredients"].length + '   ingredients </span>  <br>'//+ '</span></a>'
+
+        ingredients= data["good_toppings"][i]["ingredients"].join(" ")
+
+        good_topping_html +=  ingredients + '</span></a>'
+      }
+      $("#goodtoppings").append(good_topping_html);
+
+      var ingredients = '';
+      for (var i=0; i < data['bad_toppings'].length; i++) {
+        bad_topping_html += '<a href="#" class="list-group-item" data-index="' + i + '">' +
+        '<span style="word-break: break-word;" class="glyphicon">' +
+        data["bad_toppings"][i]["topping_name"] + ' has ' + data["bad_toppings"][i]["ingredients"].length + '   ingredients   <br>'//+ '</span></a>' //+ '</span></a>'
+
+        ingredients= data["bad_toppings"][i]["ingredients"].join(" ")
+
+        bad_topping_html +=  ingredients + '</span></a>'
+      }
+      $("#badtoppings").append(bad_topping_html);
+    });
+  });
+
+
+  </script>
+
+
+
+
+    <div id="good" class="col-xs-5">
+        <div class="list-group">
+            <a href="#" class="list-group-item active">
+                <span class="glyphicon"></span> GOOD TOPPINGS w/ Ingredients <span id="good_badge" class="badge ">25</span>
+            </a>
+            <div id="goodtoppings"></div>
+        </div>
+    </div>
+    <div id="bad" class="col-xs-5">
+        <div class="list-group">
+            <a href="#" class="list-group-item active">
+                <span class="glyphicon"></span> BAD TOPPINGS  w/ Ingredients<span id="bad_badge" class="badge">25</span>
+            </a>
+            <div id="badtoppings"></div>
+        </div>
+    </div>
+
+  </body>
 </html>
