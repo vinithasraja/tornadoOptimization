@@ -26,6 +26,7 @@ class Taco(Base):
     def db(self):
         return inspect(self).session
 
+    #Refactored with one function and used dictionary to store topping name and ingredients
     def toppings(self, good=True):
         is_good = True if good else False
         toppings = self.db.query(Topping).filter_by(taco_id=self.id, is_good=is_good)
@@ -56,19 +57,19 @@ class Taco(Base):
     #     return ingredients_list
 
 #Planning to use ingredient sum for printing statistics
-    def ingredient_sum(self):
-        total_sum = 0
-        total_toppings = self.toppings()
-        for topping in total_toppings:
-            if topping.is_good:
-                ingredients = self.db.query(Ingredient).filter_by(good_topping_id=topping.id).all()
-                for ingredient in ingredients:
-                    total_sum += 1
-            else:
-                ingredients = self.db.query(Ingredient).filter_by(bad_topping_id=topping.id).all()
-                for ingredient in ingredients:
-                    total_sum += 1
-        return total_sum
+    # def ingredient_sum(self):
+    #     total_sum = 0
+    #     total_toppings = self.toppings()
+    #     for topping in total_toppings:
+    #         if topping.is_good:
+    #             ingredients = self.db.query(Ingredient).filter_by(good_topping_id=topping.id).all()
+    #             for ingredient in ingredients:
+    #                 total_sum += 1
+    #         else:
+    #             ingredients = self.db.query(Ingredient).filter_by(bad_topping_id=topping.id).all()
+    #             for ingredient in ingredients:
+    #                 total_sum += 1
+    #     return total_sum
 
 class Topping(Base):
     __tablename__ = 'waketesting_toppings'
